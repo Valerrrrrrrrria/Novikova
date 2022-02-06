@@ -34,7 +34,10 @@ class PlaceholderFragment : Fragment() {
 
     var viewdPosts = HashMap<String, Int>()
 
+    var idPosts = HashMap<String, Int>()
+
     var topic: String = "latest"
+    var topicId: Int = 0
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -65,6 +68,7 @@ class PlaceholderFragment : Fragment() {
         pageViewModel.index.observe(viewLifecycleOwner, Observer {
 //            textView.text = it.toString()
             getAllLatestList(it)
+            topicId = it
         })
 
         binding.nextButton.setOnClickListener {
@@ -82,7 +86,9 @@ class PlaceholderFragment : Fragment() {
                 }
 
             } else {
-                binding.nextButton.visibility = View.INVISIBLE
+
+                getAllLatestList(topicId)
+
             }
         }
 
@@ -149,7 +155,10 @@ class PlaceholderFragment : Fragment() {
         if (!viewdPosts.containsKey(topic))
             viewdPosts[topic] = 0
 
-        mService.getPostsList(topic).enqueue(object : Callback<Life> {
+        if (!idPosts.containsKey(topic))
+            idPosts[topic] = 0
+
+        mService.getPostsList(topic, idPosts[topic]!!).enqueue(object : Callback<Life> {
             override fun onFailure(call: Call<Life>, t: Throwable) {
                 binding.imageView.visibility = View.GONE
                 binding.errorLayout.visibility = View.VISIBLE
@@ -176,6 +185,8 @@ class PlaceholderFragment : Fragment() {
                         .load(url)
                         .error(R.drawable.ic_launcher_foreground)
                         .into(binding.imageView)
+
+                    idPosts[topic] = idPosts[topic]!! + 1
 
                 } else {
                     binding.nextButton.visibility = View.INVISIBLE

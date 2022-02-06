@@ -6,6 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface RetrofitServices {
-    @GET("{topic}/0?json=true")
-    fun getPostsList(@Path("topic") topic: String): Call<Life>
+    @GET("{topic}/{id}?json=true")
+    fun getPostsList(@Path("topic") topic: String, @Path("id") id: Int): Call<Life>
 }
