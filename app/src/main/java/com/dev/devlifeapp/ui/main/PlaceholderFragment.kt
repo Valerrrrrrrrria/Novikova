@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.dev.devlifeapp.R
 import com.dev.devlifeapp.common.Common
 import com.dev.devlifeapp.databinding.FragmentMainBinding
@@ -213,6 +214,7 @@ class PlaceholderFragment : Fragment() {
         Glide.with(this@PlaceholderFragment)
             .load(localtopic.imageUrl)
             .error(R.drawable.ic_launcher_foreground)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .into(binding.imageView)
     }
 }
