@@ -69,12 +69,17 @@ class PlaceholderFragment : Fragment() {
 
         binding.nextButton.setOnClickListener {
 
-            val localtopic = topicsCache[topic]?.get(viewdPosts[topic]!!)
+            if (topicsCache[topic]?.size!! > viewdPosts[topic]!!) {
 
-            Log.i("INFOINFO", "${localtopic?.description}")
+                val localtopic = topicsCache[topic]?.get(viewdPosts[topic]!!)
+                Log.i("INFOINFO", "${localtopic?.description}")
 
-            if (localtopic != null) {
-                downloadImage(localtopic)
+                if (localtopic != null) {
+                    downloadImage(localtopic)
+                }
+
+            } else {
+                binding.nextButton.visibility = View.INVISIBLE
             }
         }
 
