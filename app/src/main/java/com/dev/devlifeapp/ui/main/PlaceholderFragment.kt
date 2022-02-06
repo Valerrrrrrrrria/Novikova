@@ -63,23 +63,45 @@ class PlaceholderFragment : Fragment() {
 //        })
 
         pageViewModel.index.observe(viewLifecycleOwner, Observer {
-            textView.text = it.toString()
+//            textView.text = it.toString()
             getAllLatestList(it)
         })
 
         binding.nextButton.setOnClickListener {
+            if (topicsCache[topic]?.size!! - 1 > viewdPosts[topic]!!) {
+                binding.nextButton.visibility = View.VISIBLE
+                binding.backButton.visibility = View.VISIBLE
 
-            if (topicsCache[topic]?.size!! > viewdPosts[topic]!!) {
+                viewdPosts[topic] = viewdPosts.get(topic)!! + 1
 
                 val localtopic = topicsCache[topic]?.get(viewdPosts[topic]!!)
-                Log.i("INFOINFO", "${localtopic?.description}")
+
+                if (localtopic != null) {
+                    Log.i("INFOINFO", "${viewdPosts[topic]}")
+                    downloadImage(localtopic)
+                }
+
+            } else {
+                binding.nextButton.visibility = View.INVISIBLE
+            }
+        }
+
+        binding.backButton.setOnClickListener {
+            if (viewdPosts[topic]!! > 0) {
+                binding.backButton.visibility = View.VISIBLE
+                binding.nextButton.visibility = View.VISIBLE
+
+                viewdPosts[topic] = viewdPosts.get(topic)!! - 1
+                Log.i("INFOINFO", "${viewdPosts[topic]}")
+
+                val localtopic = topicsCache[topic]?.get(viewdPosts[topic]!!)
 
                 if (localtopic != null) {
                     downloadImage(localtopic)
                 }
 
             } else {
-                binding.nextButton.visibility = View.INVISIBLE
+                binding.backButton.visibility = View.INVISIBLE
             }
         }
 
@@ -155,11 +177,8 @@ class PlaceholderFragment : Fragment() {
                         .error(R.drawable.ic_launcher_foreground)
                         .into(binding.imageView)
 
-                    viewdPosts[topic] = viewdPosts.get(topic)!! + 1
-                    Log.i("INFOINFO", "${viewdPosts[topic]}")
-
                 } else {
-
+                    binding.nextButton.visibility = View.INVISIBLE
                     binding.imageView.visibility = View.GONE
                     binding.errorLayout.visibility = View.VISIBLE
                     binding.errorTextView.text = "Данные отсутствуют, попробуйте позже."
@@ -172,12 +191,11 @@ class PlaceholderFragment : Fragment() {
 
         binding.descriptionTextView.text = localtopic.description
 
+        Log.i("INFOINFO", "${viewdPosts[topic]}")
+
         Glide.with(this@PlaceholderFragment)
             .load(localtopic.imageUrl)
             .error(R.drawable.ic_launcher_foreground)
             .into(binding.imageView)
-
-        viewdPosts[topic] = viewdPosts.get(topic)!! + 1
-        Log.i("INFOINFO", "${viewdPosts[topic]}")
     }
 }
