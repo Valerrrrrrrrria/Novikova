@@ -71,6 +71,12 @@ class PlaceholderFragment : Fragment() {
             topicId = it
         })
 
+        binding.errorButton.setOnClickListener {
+
+            getAllLatestList(topicId)
+
+        }
+
         binding.nextButton.setOnClickListener {
             if (topicsCache[topic]?.size!! - 1 > viewdPosts[topic]!!) {
                 binding.nextButton.visibility = View.VISIBLE
