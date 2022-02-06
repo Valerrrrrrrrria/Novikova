@@ -1,15 +1,20 @@
 package com.dev.devlifeapp
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+import android.util.Log
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
+import com.dev.devlifeapp.common.Common
 import com.dev.devlifeapp.ui.main.SectionsPagerAdapter
 import com.dev.devlifeapp.databinding.ActivityMainBinding
+import com.dev.devlifeapp.interfaces.RetrofitServices
+import com.dev.devlifeapp.model.Life
+
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+
         val viewPager: ViewPager = binding.viewPager
         viewPager.adapter = sectionsPagerAdapter
 
